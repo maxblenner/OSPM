@@ -1,0 +1,9 @@
+Password manager:
+
+Need:
+
+- User I/O		       [ ]
+- Encryption/Decryption System [ ]
+- Database		       [ ]	
+- User Interface	       [ ]
+- Application Controller       [ ]	
