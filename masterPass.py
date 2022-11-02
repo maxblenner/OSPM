@@ -44,14 +44,24 @@ def checkPassword(userIn, storedPW, salt): #checks user input against stored sal
         print("Incorrect Password.")
         return False
 
+def create_key(filename, key):
+       
+    filepath = filename
+    # Creates a new file
+    with open(filepath, 'wb') as f:
+        f.write(key)
+
+#create_key("key.txt")
 
 #genSaltFile("salt.txt")
 
-masterPass = input("Enter Password Master Password: ").encode()
-print(masterPass)
+#process to update/add master password
+#masterPass = "hello".encode()
+#print(masterPass)
 
 
 
-hashed = addSalt(masterPass,loadSalt("salt.txt"))
-print(hashed)
+
+#key = addSalt(masterPass,loadSalt("salt.txt"))
+#print(key)
 
