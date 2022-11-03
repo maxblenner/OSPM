@@ -8,8 +8,9 @@ def create_key(filename):
     with open(filepath, 'wb') as f:
         f.write(key)
     
-create_key("testKey.txt")
-
+#create_key("testKey.txt")
 
 password = "hello".encode()
+
+
 
