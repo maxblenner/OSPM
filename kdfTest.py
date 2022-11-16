@@ -23,6 +23,7 @@ def loadSalt():
         print("No salt file found!")        
         return None
 
+'''
 def saveKey(key):
     with open("testKey.txt", 'wb') as f:
         f.write(key)
@@ -35,6 +36,7 @@ def loadKey():
     except:        
         print("No key file found!")        
         return None
+'''
 
 kdf = PBKDF2HMAC(
     algorithm=hashes.SHA256(),
@@ -54,19 +56,24 @@ f = Fernet(key)
 
 print(loadSalt())
 
-'''
+
+#using encryption/decryption
+
 token = f.encrypt(b"Secret message!")
+token2 = f.encrypt(b"password2")
 #token
 #b'...'
 print(f.decrypt(token).decode())
+print(f.decrypt(token2).decode())
 #b'Secret message!'
 print(token)
-print(f)
-'''
+print(token2)
 
 
 
-print("Testing...")
+
+
+print("\nTesting...")
 
 kdf = PBKDF2HMAC(
     algorithm=hashes.SHA256(),
@@ -84,14 +91,7 @@ pw = base64.urlsafe_b64encode(kdf.derive(password))
 print(pw)
 print(key)
 
-'''
-try:
-    kdf.verify(userIn, key.encode())
-    print("Password verified")
-except:
-    print("invalid credentials")
-'''
-    
+
 
 #print()
 #print(key)

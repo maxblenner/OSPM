@@ -11,7 +11,7 @@ from cryptography.hazmat.backends import default_backend
 #salt = os.urandom(16)
 #print(salt)
 
-password = 'hello'
+password = b'hello'
 
 
 
