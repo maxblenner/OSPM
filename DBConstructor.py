@@ -21,3 +21,5 @@ c.execute("""CREATE TABLE Accounts (
             Note TEXT NULL,
             FOREIGN KEY (UserID) REFERENCES Users (ID))
                                 """)
+
+conn.commit()
