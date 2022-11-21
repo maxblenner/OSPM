@@ -13,7 +13,26 @@ def insertUser(user):
 
 def insertAccount(account):
     with conn: 
-       c.execute("INSERT INTO Accounts VALUES (:UserID, :ServiceName, :Login, :Password, :Note)", {'UserID': account.uid, 'ServiceName': account.serName, 'Login': account.login, 'Salt': account.salt, 'Note': account.note})
+       c.execute("INSERT INTO Accounts VALUES (:UserID, :ServiceName, :Login, :Password, :Note)", {'UserID': account.uid, 'ServiceName': account.serName, 'Login': account.login, 'Password': account.password, 'Note': account.note})
+
+def selectAccounts(uid):
+    with conn:
+        c.execute("SELECT * FROM Accounts WHERE UserID=?",(uid,))
+        list = c.fetchall()
+        return list
+
+def getKey(id):
+    with conn:
+        c.execute("SELECT Password FROM Users WHERE ID=?",(id,))
+        key = c.fetchone()[0]
+        return key
+
+def getToken(uid,serName):
+    with conn:
+        c.execute("SELECT Password FROM Accounts WHERE UserID=? AND ServiceName=?",(uid,serName,))
+        token = c.fetchone()[0]
+        return token
+
 
 def verifyLogin():
     userIn = input("Username: ")
@@ -44,30 +63,46 @@ def verifyLogin():
     except:
         print("Error!")
         return False
+    
+def iterateID():
+    c.execute("SELECT * FROM Users WHERE ID = (SELECT MAX(ID) FROM Users)") #selects largest ID from table
+    pull = c.fetchone()[0]
+    ID = pull + 1
+    return ID
 
 
-#this is a test addition
+
+#user2 = User(iterateID(),'user2',b'letmein')
+#insertUser(user2)
+
 '''
-salt = KDF.genSalt()
-user1 = User(1,'user1',KDF.deriveKey(b'hello',salt),salt)
-insertUser(user1)
+account1_1 = Account(1,'Amazon','JohnDoe123',KDF.encode(b'pass1',getKey(1)),None)
+account1_2 = Account(1,'YouTube','JohnDoeee123',KDF.encode(b'pass2',getKey(1)),None)
+account2_1 = Account(2,'Zulu','ASmithyy',KDF.encode(b'secret1',getKey(1)),None)
+account2_2 = Account(2,'eBay','ASmith221',KDF.encode(b'secret2',getKey(1)),None)
+insertAccount(account1_1)
+insertAccount(account1_2)
+insertAccount(account2_1)
+insertAccount(account2_2)
 '''
 
-#test addition with decoding added
-'''
-salt = KDF.genSalt()
-pw = KDF.deriveKey(b'hello',salt)
-user2 = User(2,'user1',pw.decode('unicode_escape'),salt.decode('unicode_escape'))
-insertUser(user2)
-'''
+#c.execute("DELETE FROM Users WHERE ID=2")
 
 c.execute("SELECT * FROM Users")
 print(c.fetchall())
 
-verifyLogin()
+list1 = selectAccounts(1)
+list2 = selectAccounts(2)
 
+print(list1,list2)
 
-#user2 = User(2,'user2',userIn)
+pw = KDF.decode(getToken(1,'Amazon'),getKey(1))
+print(pw)
+
+conn.commit()
+
+#verifyLogin()
+
 #IDEA= Automate id selection by selecting the IDs from table and choosing n+1
 
 

@@ -1,11 +1,13 @@
+import KDF
+
 class User:
     
     #user object constructor
-    def __init__(self, id, username, password, salt):
-        self.id =       id
+    def __init__(self, ID, username, password):
+        self.id =       ID
         self.username = username 
-        self.password = password
-        self.salt =     salt
+        self.salt =     KDF.genSalt()
+        self.password = KDF.deriveKey(password,self.salt)
 
 class Account:
 

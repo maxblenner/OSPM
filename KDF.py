@@ -23,5 +23,15 @@ def deriveKey(input,salt):
     
     return key
 
+def encode(pw,key):
+    f = Fernet(key)
+    token = f.encrypt(pw)
+    return token
+
+def decode(token,key):
+    f = Fernet(key)
+    pw = f.decrypt(token)
+    return pw
+
 
 
