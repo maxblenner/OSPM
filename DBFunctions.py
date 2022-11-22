@@ -34,30 +34,32 @@ def getToken(uid,serName):
         return token
 
 
-def verifyLogin():
+def verifyLogin(uname, pword):
+    '''
     userIn = input("Username: ")
     print(userIn)
     userIn2 = input("Password: ").encode()
     print("Verifying...")
+    '''
 
     #c = conn.cursor()
     try:
-        c.execute("SELECT Password from Users WHERE Username=?",(userIn,))
+        c.execute("SELECT Password from Users WHERE Username=?",(uname,))
         password = c.fetchone()[0]
         print(password)
 
-        c.execute("SELECT Salt from Users WHERE Username=?",(userIn,))
+        c.execute("SELECT Salt from Users WHERE Username=?",(uname,))
         output = c.fetchone()[0] 
         print(output)
 
-        attempt = KDF.deriveKey(userIn2,output)
+        attempt = KDF.deriveKey(pword,output)
 
         if attempt == password:
-            print("Correct password!")
+            #print("Correct password!")
             return True
 
         else:
-            print("Incorrect credentials.")
+            #print("Incorrect credentials.")
             return False
     
     except:
