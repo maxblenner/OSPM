@@ -12,7 +12,8 @@ class User:
 class Account:
 
     #account object constructor
-    def __init__(self, uid, serName, login, password, note):
+    def __init__(self, accID, uid, serName, login, password, note):
+        self.accID =    accID  
         self.uid =      uid
         self.serName =  serName 
         self.login =    login

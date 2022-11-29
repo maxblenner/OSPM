@@ -14,9 +14,10 @@ c.execute("""CREATE TABLE Users (
                                 """)
 '''
 
-#c.execute("""DROP TABLE Accounts""")
+c.execute("""DROP TABLE Accounts""")
 
 c.execute("""CREATE TABLE Accounts (
+            AccID INTEGER NOT NULL,
             UserID INTEGER NOT NULL,
             ServiceName TEXT NOT NULL,
             Login TEXT NOT NULL,
