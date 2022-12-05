@@ -87,52 +87,70 @@ def pullAccounts(uid,i):
                 pullRow = c.fetchall()
                 print(pullRow[x][i])
             
-    
-        
-            
-
-
-#user2 = User(iterateID(),'user2',b'letmein')
-#insertUser(user2)
-
 '''
-c.execute("DELETE FROM Accounts WHERE UserID =2")
-c.execute("DELETE FROM Accounts WHERE UserID =1")
-c.execute("SELECT * FROM Accounts")
-print(c.fetchall())
+c.execute("DELETE FROM Accounts WHERE ServiceName=?",('test',))
+print("returning accounts: ")
+c.execute("SELECT * FROM Accounts WHERE UserID=?",(1,))
+list1 = c.fetchall()u
+print(list1)
 conn.commit()
 '''
 
-'''
-account1_1 = Account((pullNumber(1)+1),1,'Amazon','JohnDoe123',KDF.encode(b'pass1',getKey(1)),None)
-insertAccount(account1_1)
-account1_2 = Account((pullNumber(1)+1),1,'YouTube','JohnDoeee123',KDF.encode(b'pass2',getKey(1)),None)
-insertAccount(account1_2)
-account2_1 = Account((pullNumber(2)+1),2,'Zulu','ASmithyy',KDF.encode(b'secret1',getKey(1)),None)
-insertAccount(account2_1)
-account2_2 = Account((pullNumber(2)+1),2,'eBay','ASmith221',KDF.encode(b'secret2',getKey(1)),None)
-insertAccount(account2_2)
+#1 Verify Login
+print("#1 Verify Login")
+uname = input("Username: ")
+pword = input("Password: ").encode()
+if(verifyLogin(uname,pword) == True):
+    print("Welcome " + uname + "!")
+    UID = getID(uname)
+else:
+    print("Verification failed.")
+
+#2 Encode
+print("#2 Encode")
+userIn = input("Enter something to encode: ").encode()
+encoded = KDF.encode(userIn,getKey(UID))
+print(encoded)
+
+#3 Decode
+print("#3 Decode")
+print("Decoding...")
+decoded = KDF.decode(encoded,getKey(UID))
+print("The decoded message is: " + decoded.decode())
+
+#4 Add Account
+print("#4 Add Account")
+print("Add account to your password manager: ")
+serName_in = input("Service name: ") 
+login_in = input("Login: ")
+password_in = KDF.encode(input("Password: ").encode(),getKey(UID))
+note_in = input("Note(optional): ")
+
+acc = Account(pullNumber(UID)+1,UID,serName_in,login_in,password_in,note_in)
+insertAccount(acc)
+
+c.execute("SELECT * FROM Accounts WHERE UserID =? AND AccID=?",(UID,pullNumber(UID)))
+account = c.fetchall()
+print(account)
+
+#5 Show Accounts
+print("#5 Show Accounts")
+print("returning accounts: ")
+list1 = selectAccounts(UID)
+print(list1)
 
 
-list1 = selectAccounts(1)
-list2 = selectAccounts(2)
-print(list1,list2)
-'''
+#6 Decode Password and Delete Account
+print("#6 Decode Password and Delete Account")
+service_in = input("Select an account to return decoded password by enterting the service name: ")
+decoded_password = KDF.decode(getToken(UID,service_in),getKey(UID)).decode()
+print(decoded_password)
 
+delete_in = input("Select an account to delete by entering the service name: ")
+c.execute("DELETE FROM Accounts WHERE UserID=? AND ServiceName=?",(UID,delete_in))
 
-#print(list1,list2)
-
-#pw = KDF.decode(getToken(1,'Amazon'),getKey(1))
-#print(pw)
-
-#pullAccounts(1,pullNumber(1))
+print("returning accounts: ")
+list1 = selectAccounts(UID)
+print(list1)
 
 conn.commit()
-
-#verifyLogin()
-
-#IDEA= Automate id selection by selecting the IDs from table and choosing n+1
-
-
-
- 

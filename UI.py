@@ -32,10 +32,10 @@ def register():
 
     Label(reg_screen, text = "Please enter new user details below:").pack()
     Label(reg_screen, text = "").pack()
-    Label(reg_screen, text = "Username * ").pack()
+    Label(reg_screen, text = "Username ").pack()
     reg_username_entry = Entry(reg_screen, textvariable = reg_username)
     reg_username_entry.pack()
-    Label(reg_screen, text = "Password * ").pack()
+    Label(reg_screen, text = "Password ").pack()
     reg_password_entry = Entry(reg_screen, textvariable = reg_password)
     reg_password_entry.pack()
     Button(reg_screen, text = "Create Account", width = 12, height = 1, command = register_user).pack()
@@ -48,8 +48,9 @@ def login_user():
 
     if DBFunctions.verifyLogin(username_entry, password_entry.encode()) == True:
         Label(login_screen, text = "Login Successful!", fg = "green", font = ("Times", 11)).pack()
-        UID =  DBFunctions.getID(username_entry)
+        UID = DBFunctions.getID(username_entry)
         #user_dash
+        login_screen.destroy()
     else:
         Label(login_screen, text = "Incorrect credentials", fg = "red", font = ("Times", 11)).pack()
 
@@ -95,6 +96,8 @@ def main_screen():
     Button(text = "Login", height = "2", width = "30", command = login).pack()
     Label(text = "").pack()
     Button(text = "Create Account", height = "2", width = "30", command = register).pack()
+    Label(text = "").pack()
+    Button(text = "Dashboard", height = "2", width = "30", command = user_dash).pack()
 
     screen.mainloop()
 
@@ -157,19 +160,21 @@ def account_entry():
 
 def user_dash():
     global user_screen
-    i = 0
     user_screen = Toplevel(screen)
     user_screen.title("Your Dashboard")
     user_screen.geometry("500x420")
     
+    i = 0
+
     Label(text = "OSPM 1.0", bg = "grey", width = "300", height = "2", font = ("Times", 13)).pack()
     
+    Label(text = "").pack()
+    Button(text = "Add Account", height = "2", width = "30", command = account_entry).pack()
+    Label(text = "").pack()
+
     while(i < DBFunctions.pullNumber(UID)):
         
-        Label(text = "").pack()
-        Button(text = "Add Account", height = "2", width = "30", command = account_entry).pack()
-        Label(text = "").pack()
+        Label(text="")  
+    
     
 main_screen()
-
-
