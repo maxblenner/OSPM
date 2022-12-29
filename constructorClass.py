@@ -10,12 +10,12 @@ class User:
         self.password = KDF.deriveKey(password,self.salt)
 
 class Account:
-
+    
     #account object constructor
-    def __init__(self, accID, uid, serName, login, password, note):
+    def __init__(self, accID, uid, serName, login, password, note, key):
         self.accID =    accID  
         self.uid =      uid
         self.serName =  serName 
         self.login =    login
-        self.password = password
+        self.password = KDF.encode(password,key)
         self.note =     note

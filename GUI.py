@@ -18,7 +18,7 @@ def main_dash():
     Label(text = "").pack()
     Button(text = "Login", height = "2", width = "30", command = login).pack()
     Label(text = "").pack()
-    Button(text = "Create Account", height = "2", width = "30", command = register).pack()
+    Button(text = "Register User", height = "2", width = "30", command = register).pack()
     Label(text = "").pack()
     Label(text = "").pack()
 
@@ -35,23 +35,96 @@ def main_dash():
     Label(text = "").pack()
     Label(text = "").pack()
 
-    button1 = tk.Button(text="Update data", command=fetch_accounts)
+    Button(text = "Add Account", height = "2", width = "30", command = create_account).pack()
+    Label(text = "").pack()
+    Button(text="Update Data", height = "2", width = "30", command=fetch_accounts).pack()
+    Label(text = "").pack()
+    Button(text="Update Data (Encrypted)", height = "2", width = "30", command=fetch_encrypted).pack()
 
-    button1.pack(pady=10)
+    #button1.pack(pady=10)
 
 
 
     main_screen.mainloop()
 
+def create_account():
+
+    if(UID == None): #if user has not logged in
+        return None
+
+    global account_screen
+    account_screen = Toplevel(main_screen)
+    account_screen.title("Add Account")
+    account_screen.geometry("500x350")
+
+    global acc_serName
+    global acc_login
+    global acc_password 
+    global acc_note
+    acc_serName = StringVar()
+    acc_login = StringVar()
+    acc_password = StringVar()
+    acc_note = StringVar()
+    
+    Label(account_screen, text = "Please enter account details below:").pack()
+    Label(account_screen, text = "").pack()
+    
+    Label(account_screen, text = "Service Name  ").pack()
+    acc_serName_entry = Entry(account_screen, textvariable = acc_serName)
+    acc_serName_entry.pack()
+    
+    Label(account_screen, text = "Login  ").pack()
+    acc_login_entry = Entry(account_screen, textvariable = acc_login)
+    acc_login_entry.pack()
+
+    Label(account_screen, text = "Password  ").pack()
+    acc_password_entry = Entry(account_screen, textvariable = acc_password)
+    acc_password_entry.pack()
+
+    Label(account_screen, text = "Note (Optional)  ").pack()
+    acc_note_entry = Entry(account_screen, textvariable = acc_note)
+    acc_note_entry.pack()
+    
+    Button(account_screen, text = "Add Account", width = 12, height = 1, command = add_account).pack()
+
+def add_account():
+
+    #collects text field data
+    serName_entry = acc_serName.get()
+    login_entry = acc_login.get()
+    password_entry = acc_password.get()
+    note_entry = acc_note.get()
+
+    #constructs an account object
+    account = Account(DBFunctions.iterateAccID(UID), UID, serName_entry, login_entry, password_entry.encode(), note_entry, DBFunctions.getKey(UID))
+    #inserts object into database
+    DBFunctions.insertAccount(account)
+
 def fetch_accounts():
+
+    if(UID == None): #if user has not logged in
+        return None
+
+    for item in tree.get_children(): #deletes data currently being displayed
+        tree.delete(item)
 
     accounts = DBFunctions.selectDecoded(UID)
 
-    for account in accounts:
-        #print(account) 
-
+    for account in accounts: #displayed updated data
         tree.insert("", tk.END, values=account)
     
+def fetch_encrypted():
+
+    if(UID == None): #if user has not logged in
+        return None
+
+    for item in tree.get_children(): #deletes data currently being displayed
+        tree.delete(item)
+
+    accounts = DBFunctions.selectEncoded(UID)
+
+    for account in accounts: #displayed updated data
+        tree.insert("", tk.END, values=account)
 
 def login():
     
@@ -101,7 +174,7 @@ def login_user():
 def register():
     global reg_screen
     reg_screen = Toplevel(main_screen)
-    reg_screen.title("Create Account")
+    reg_screen.title("Register User")
     reg_screen.geometry("300x250")
 
     global reg_username
@@ -119,7 +192,7 @@ def register():
     Label(reg_screen, text = "Password ").pack()
     reg_password_entry = Entry(reg_screen, textvariable = reg_password)
     reg_password_entry.pack()
-    Button(reg_screen, text = "Create Account", width = 12, height = 1, command = register_user).pack()
+    Button(reg_screen, text = "Register User", width = 12, height = 1, command = register_user).pack()
 
 def register_user():
     reg_username_in = reg_username.get()

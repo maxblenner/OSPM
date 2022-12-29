@@ -12,10 +12,8 @@ c.execute("""CREATE TABLE Users (
             Password TEXT NOT NULL,
             Salt TEXT NOT NULL)
                                 """)
-'''
 
-'''
-c.execute("""DROP TABLE Accounts""")
+#c.execute("""DROP TABLE Accounts""")
 
 c.execute("""CREATE TABLE Accounts (
             AccID INTEGER NOT NULL,
@@ -26,6 +24,13 @@ c.execute("""CREATE TABLE Accounts (
             Note TEXT NULL,
             FOREIGN KEY (UserID) REFERENCES Users (ID))
                                 """)
+'''
+
+'''
+c.execute("""DELETE FROM Accounts WHERE UserID = 1 AND AccID = 3""")
+c.execute("""SELECT * FROM Accounts WHERE UserID = 1""")
+show = c.fetchall()
+print(show)
 '''
 
 conn.commit()
