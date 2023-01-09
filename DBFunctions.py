@@ -9,33 +9,6 @@ import KDF
 conn = sqlite3.connect('OSPM.db') #connects to or constructs the database
 c = conn.cursor()
 
-'''
-def checkInput(userIn):
-    subString = ["SELECT","*","\"","\'","OR","="]
-    #i = 0
-
-    
-    while(i<6):
-        check = subString[i]
-        if(check in userIn == True):
-            print("wrong input " + check + " entered")
-            return False
-        else:
-            i = i+1
-    
-
-    for s in subString:
-        if subString in userIn:
-            print("wrong input " + subString + " entered")
-            return False
-        else:
-            print(subString + "not in input")
-
-
-    print("correct input")
-    return True
-'''
-
 #def checkObj(obj):
 
 def insertUser(user):
@@ -163,19 +136,20 @@ def verifyLogin(uname, pword):
     
 def iterateID():
     with conn:    
-        c.execute("SELECT * FROM Users WHERE ID = (SELECT MAX(ID) FROM Users)") #selects largest ID from table
+        c.execute("SELECT MAX(ID) FROM Users") #selects largest ID from table
         pull = c.fetchone()[0]
         ID = pull + 1
         return ID
 
 def iterateAccID(uid):
     with conn:    
-        c.execute("SELECT * FROM Accounts WHERE UserID =? AND AccID = (SELECT MAX(AccID) FROM Accounts)",(uid,)) #selects largest Account ID from table and iterates it
-        pull = c.fetchone()
-        if pull == None:
+        c.execute("SELECT MAX(AccID) FROM Accounts WHERE UserID =?",(uid,)) #selects largest Account ID from table and iterates it
+        pull = c.fetchone()[0]
+        if(pull == None):
             pull = 0
         AccID = pull + 1
         return AccID
+
 
 def pullNumber(uid):
     with conn:
@@ -192,5 +166,33 @@ def pullAccounts(uid,i):
                 print(pullRow[x][i])
             
 
+
+
+
+#c.execute("DELETE FROM Accounts WHERE UserID =5 AND Note ='mynote'")
+
+#c.execute("SELECT * FROM Accounts WHERE UserID =? AND AccID = (SELECT MAX(AccID) FROM Accounts)",(5,))
+
+'''
+c.execute("SELECT MAX(AccID) FROM Accounts WHERE UserID =?",(6,))
+show = c.fetchone()[0]
+if(show == None):
+    show = 0
+print(show)
+'''
+
+'''
+c.execute("SELECT MAX(ID) FROM Users") #selects largest ID from table
+pull = c.fetchone()[0]
+ID = pull + 1
+print(pull)
+print(ID)
+'''
+
+'''
+c.execute("SELECT * FROM Accounts WHERE UserID =5")
+show = c.fetchall()
+print(show)
+'''
 conn.commit()
 

@@ -89,18 +89,12 @@ def create_account():
 
 def add_account():
 
-    print("entered add_account")
 
     #collects text field data
     serName_entry = acc_serName.get()
     login_entry = acc_login.get()
     password_entry = acc_password.get()
     note_entry = acc_note.get()
-
-    print(serName_entry)
-    print(login_entry)
-    print(password_entry)
-    print(note_entry)
 
     #constructs an account object
     account = Account(DBFunctions.iterateAccID(UID), UID, serName_entry, login_entry, password_entry.encode(), note_entry, DBFunctions.getKey(UID))
