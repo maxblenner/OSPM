@@ -171,7 +171,9 @@ def iterateID():
 def iterateAccID(uid):
     with conn:    
         c.execute("SELECT * FROM Accounts WHERE UserID =? AND AccID = (SELECT MAX(AccID) FROM Accounts)",(uid,)) #selects largest Account ID from table and iterates it
-        pull = c.fetchone()[0]
+        pull = c.fetchone()
+        if pull == None:
+            pull = 0
         AccID = pull + 1
         return AccID
 

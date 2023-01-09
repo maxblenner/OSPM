@@ -89,26 +89,18 @@ def create_account():
 
 def add_account():
 
-    '''
-    i = 0
-    inputList = [acc_serName, acc_login, acc_password, acc_note]
-
-    while(i<4):
-        textCheck = inputList[i]
-        check = DBFunctions.checkInput(textCheck)
-        if(check == False):
-            print("wrong input")
-            return None
-        else:
-            i = i+1
-    '''
+    print("entered add_account")
 
     #collects text field data
     serName_entry = acc_serName.get()
     login_entry = acc_login.get()
     password_entry = acc_password.get()
     note_entry = acc_note.get()
-    
+
+    print(serName_entry)
+    print(login_entry)
+    print(password_entry)
+    print(note_entry)
 
     #constructs an account object
     account = Account(DBFunctions.iterateAccID(UID), UID, serName_entry, login_entry, password_entry.encode(), note_entry, DBFunctions.getKey(UID))
