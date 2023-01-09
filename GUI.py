@@ -12,7 +12,7 @@ def main_dash():
     global tree
     main_screen = Tk()
 
-    main_screen.geometry("1500x1000")
+    main_screen.geometry("1000x800")
     main_screen.title("OSPM 1.0")
     Label(text = "OSPM 1.0", bg = "grey", width = "300", height = "2", font = ("Times", 13)).pack()
     Label(text = "").pack()
@@ -89,16 +89,32 @@ def create_account():
 
 def add_account():
 
+    '''
+    i = 0
+    inputList = [acc_serName, acc_login, acc_password, acc_note]
+
+    while(i<4):
+        textCheck = inputList[i]
+        check = DBFunctions.checkInput(textCheck)
+        if(check == False):
+            print("wrong input")
+            return None
+        else:
+            i = i+1
+    '''
+
     #collects text field data
     serName_entry = acc_serName.get()
     login_entry = acc_login.get()
     password_entry = acc_password.get()
     note_entry = acc_note.get()
+    
 
     #constructs an account object
     account = Account(DBFunctions.iterateAccID(UID), UID, serName_entry, login_entry, password_entry.encode(), note_entry, DBFunctions.getKey(UID))
     #inserts object into database
     DBFunctions.insertAccount(account)
+    Label(account_screen, text = "Account Added", fg = "green", font = ("Times", 11)).pack()
 
 def fetch_accounts():
 

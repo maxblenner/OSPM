@@ -9,6 +9,35 @@ import KDF
 conn = sqlite3.connect('OSPM.db') #connects to or constructs the database
 c = conn.cursor()
 
+'''
+def checkInput(userIn):
+    subString = ["SELECT","*","\"","\'","OR","="]
+    #i = 0
+
+    
+    while(i<6):
+        check = subString[i]
+        if(check in userIn == True):
+            print("wrong input " + check + " entered")
+            return False
+        else:
+            i = i+1
+    
+
+    for s in subString:
+        if subString in userIn:
+            print("wrong input " + subString + " entered")
+            return False
+        else:
+            print(subString + "not in input")
+
+
+    print("correct input")
+    return True
+'''
+
+#def checkObj(obj):
+
 def insertUser(user):
     with conn: 
        c.execute("INSERT INTO Users VALUES (:ID, :Username, :Password, :Salt)", {'ID': user.id, 'Username': user.username, 'Password': user.password, 'Salt': user.salt}) 
