@@ -1,4 +1,0 @@
-- Code account addition in the GUI
-- Input padding against SQL injection
-- Radomise KDF iterations
-- Encrypt folders being created by OSPM
