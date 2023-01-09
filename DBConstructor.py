@@ -33,4 +33,8 @@ show = c.fetchall()
 print(show)
 '''
 
+
+#c.execute("DELETE FROM Accounts")
+#c.execute("DELETE FROM Users")
+
 conn.commit()

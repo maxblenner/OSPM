@@ -4,8 +4,6 @@ from constructorClass import User, Account
 import sqlite3
 import KDF
 
-
-
 conn = sqlite3.connect('OSPM.db') #connects to or constructs the database
 c = conn.cursor()
 
@@ -19,13 +17,16 @@ def insertAccount(account):
     with conn: 
        c.execute("INSERT INTO Accounts VALUES (:AccID, :UserID, :ServiceName, :Login, :Password, :Note)", {'AccID': account.accID, 'UserID': account.uid, 'ServiceName': account.serName, 'Login': account.login, 'Password': account.password, 'Note': account.note})
 
+'''
 def selectAccounts(uid):
     with conn:
         c.execute("SELECT * FROM Accounts WHERE UserID=?",(uid,))
         list = c.fetchall()
         return list
+'''
 
 def selectDecoded(uid):
+    
     accID = 1 #it starts by pulling data from the first account
     tup = () #empty tuple
     decoded_list = [] #empty list
@@ -47,7 +48,7 @@ def selectDecoded(uid):
 
             tup = tup + (service_name,login,password,note)
         
-            print(tup)
+            #print(tup)
             
             decoded_list.append(tup)
             
@@ -82,7 +83,7 @@ def selectEncoded(uid):
 
             tup = tup + (service_name,login,password,note)
         
-            print(tup)
+            #print(tup)
             
             encoded_list.append(tup)
             
@@ -112,7 +113,6 @@ def getID(username):
 
 def verifyLogin(uname, pword):
    
-    #c = conn.cursor()
     try:
         with conn:
             c.execute("SELECT Password from Users WHERE Username=?",(uname,))
@@ -138,6 +138,8 @@ def iterateID():
     with conn:    
         c.execute("SELECT MAX(ID) FROM Users") #selects largest ID from table
         pull = c.fetchone()[0]
+        if(pull == None):
+            pull = 0
         ID = pull + 1
         return ID
 
@@ -157,13 +159,28 @@ def pullNumber(uid):
         i = c.fetchone()[0]
         return i
 
+'''
 def pullAccounts(uid,i):
     x = 1
     with conn:
             while(x < 4):
                 c.execute("SELECT * FROM Accounts WHERE UserID =?",(uid,))
                 pullRow = c.fetchall()
-                print(pullRow[x][i])
+                #print(pullRow[x][i])
+'''
+
+'''
+def deleteAccount(uid,serName):
+    with conn:
+        try:
+            c.execute("DELETE FROM Accounts WHERE UserID =? and ServiceName =?",(uid,serName,))
+            return True
+        
+        except:
+            return False
+
+'''
+       
             
 
 
